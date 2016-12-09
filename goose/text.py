@@ -87,7 +87,10 @@ class WordStats(object):
 class StopWords(object):
 
     PUNCTUATION = re.compile("[^\\p{Ll}\\p{Lu}\\p{Lt}\\p{Lo}\\p{Nd}\\p{Pc}\\s]")
-    TRANS_TABLE = string.maketrans('', '')
+    try:
+        TRANS_TABLE = string.maketrans('', '')
+    except:
+        TRANS_TABLE = bytes.maketrans('', '')
     _cached_stop_words = {}
 
     def __init__(self, language='en'):
