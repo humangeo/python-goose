@@ -90,7 +90,7 @@ class StopWords(object):
     try:
         TRANS_TABLE = string.maketrans('', '')
     except:
-        TRANS_TABLE = bytes.maketrans('', '')
+        TRANS_TABLE = bytes.maketrans(b'', b'')
     _cached_stop_words = {}
 
     def __init__(self, language='en'):

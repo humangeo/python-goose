@@ -22,11 +22,11 @@ limitations under the License.
 """
 import os
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import unittest
 import socket
 
-from StringIO import StringIO
+from io import StringIO
 
 from goose import Goose
 from goose.utils import FileHelper
@@ -59,7 +59,7 @@ class MockResponse():
         return resp
 
 
-class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
+class MockHTTPHandler(urllib.request.HTTPHandler, urllib.request.HTTPSHandler):
     """\
     Mocked HTTPHandler in order to query APIs locally
     """
@@ -74,8 +74,8 @@ class MockHTTPHandler(urllib2.HTTPHandler, urllib2.HTTPSHandler):
 
     @staticmethod
     def patch(cls):
-        opener = urllib2.build_opener(MockHTTPHandler)
-        urllib2.install_opener(opener)
+        opener = urllib.request.build_opener(MockHTTPHandler)
+        urllib.request.install_opener(opener)
         # dirty !
         for h in opener.handlers:
             if isinstance(h, MockHTTPHandler):
@@ -172,16 +172,16 @@ class TestExtractionBase(BaseMockTests):
         # print result_value
 
         # cleaned_text is Null
-        msg = u"Resulting article text was NULL!"
+        msg = "Resulting article text was NULL!"
         self.assertNotEqual(result_value, None, msg=msg)
 
         # cleaned_text length
-        msg = u"Article text was not as long as expected beginning!"
+        msg = "Article text was not as long as expected beginning!"
         self.assertTrue(len(expected_value) <= len(result_value), msg=msg)
 
         # clean_text value
         result_value = result_value[0:len(expected_value)]
-        msg = u"The beginning of the article text was not as expected!"
+        msg = "The beginning of the article text was not as expected!"
         self.assertEqual(expected_value, result_value, msg=msg)
 
     def runArticleAssertions(self, article, fields):
@@ -199,7 +199,7 @@ class TestExtractionBase(BaseMockTests):
                 continue
 
             # default assertion
-            msg = u"Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
+            msg = "Error %s \nexpected: %s\nresult: %s" % (field, expected_value, result_value)
             self.assertEqual(expected_value, result_value, msg=msg)
 
     def extract(self, instance):
